@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using MyMoney.Models;
 
 namespace MyMoney.DAL
 {
@@ -8,6 +9,9 @@ namespace MyMoney.DAL
         {
 
         }
+
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountEvent> AccountEvents { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
