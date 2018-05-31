@@ -5,6 +5,7 @@ using MyMoney.Interfaces;
 
 namespace MyMoney.SignalR
 {
+    [HubName("ActivityHub")]
     public class ActivityHub : Hub
     {
         private readonly Activity _activityHub;
