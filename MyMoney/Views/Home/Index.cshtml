@@ -2,19 +2,23 @@
     ViewBag.Title = "Home Page";
 }
 @section scripts{
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/Scripts/jquery.signalR-2.2.3.js")
     @Scripts.Render("~/signalr/hubs")
     @Scripts.Render("~/Scripts/MainScript1.0.0.js")
     @Scripts.Render("~/Scripts/jqxcore.js")
     @Scripts.Render("~/Scripts/jqxgrid.js")
-    @Scripts.Render("~/Scripts/jqxgrid.pager.js")
-    @Scripts.Render("~/Scripts/jqxgrid.sort.js")
+    @Scripts.Render("~/Scripts/jqxgrid.aggregates.js")
     @Scripts.Render("~/Scripts/jqxgrid.columnsresize.js")
     @Scripts.Render("~/Scripts/jqxgrid.columnsreorder.js")
+    @Scripts.Render("~/Scripts/jqxgrid.edit.js")
+    @Scripts.Render("~/Scripts/jqxgrid.export.js")
     @Scripts.Render("~/Scripts/jqxgrid.filter.js")
-    @Scripts.Render("~/Scripts/jqxgrid.filter.js")
+    @Scripts.Render("~/Scripts/jqxgrid.grouping.js")
+    @Scripts.Render("~/Scripts/jqxgrid.pager.js")
+    @Scripts.Render("~/Scripts/jqxgrid.selection.js")
+    @Scripts.Render("~/Scripts/jqxgrid.sort.js")
+    @Scripts.Render("~/Scripts/jqxgrid.storage.js")
 }
 
 <style>
@@ -48,13 +52,12 @@
     }
 </style>
 
-<script type="text/javascript">
-
-</script>
-
 <html>
 <head>
     <title>Homepage</title>
+    <script type="text/javascript">
+        columnNames = ["Action", "Entity Type", "Criterion", "Operator", "Units", "Value", "Lower Bound", "Upper Bound", "Coordinate System"];
+    </script>
 </head>
 <body>
     <div id="mainGrid">
