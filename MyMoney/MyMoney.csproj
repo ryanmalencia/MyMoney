@@ -234,7 +234,12 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jqxbuttons.js" />
     <Content Include="Scripts\jqxcore.js" />
+    <Content Include="Scripts\jqxdata.js" />
+    <Content Include="Scripts\jqxdate.js" />
+    <Content Include="Scripts\jqxdropdownbutton.js" />
+    <Content Include="Scripts\jqxdropdownlist.js" />
     <Content Include="Scripts\jqxgrid.aggregates.js" />
     <Content Include="Scripts\jqxgrid.columnsreorder.js" />
     <Content Include="Scripts\jqxgrid.columnsresize.js" />
@@ -247,7 +252,22 @@
     <Content Include="Scripts\jqxgrid.selection.js" />
     <Content Include="Scripts\jqxgrid.sort.js" />
     <Content Include="Scripts\jqxgrid.storage.js" />
+    <Content Include="Scripts\jqxinput.js" />
+    <Content Include="Scripts\jqxlistbox.js" />
+    <Content Include="Scripts\jqxmenu.js" />
+    <Content Include="Scripts\jqxpanel.js" />
+    <Content Include="Scripts\jqxscrollbar.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Styles\images\icon-down.png" />
+    <Content Include="Styles\images\icon-left.png" />
+    <Content Include="Styles\images\icon-menu-small.png" />
+    <Content Include="Styles\images\icon-right.png" />
+    <Content Include="Styles\images\icon-sort-asc.png" />
+    <Content Include="Styles\images\icon-sort-desc.png" />
+    <Content Include="Styles\images\icon-sort-remove.png" />
+    <Content Include="Styles\images\icon-up.png" />
+    <Content Include="Styles\images\loader.gif" />
+    <Content Include="Styles\jqx.base.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

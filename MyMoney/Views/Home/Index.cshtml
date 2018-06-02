@@ -1,12 +1,23 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "My Money";
 }
 @section scripts{
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/jquery-3.3.1.min.js")
     @Scripts.Render("~/Scripts/jquery.signalR-2.2.3.js")
     @Scripts.Render("~/signalr/hubs")
     @Scripts.Render("~/Scripts/MainScript1.0.0.js")
     @Scripts.Render("~/Scripts/jqxcore.js")
+    @Scripts.Render("~/Scripts/jqxdata.js")
+    @Scripts.Render("~/Scripts/jqxdate.js")
+    @Scripts.Render("~/Scripts/jqxmenu.js")
+    @Scripts.Render("~/Scripts/jqxbuttons.js")
+    @Scripts.Render("~/Scripts/jqxdropdownlist.js")
+    @Scripts.Render("~/Scripts/jqxdropdownbutton.js")
+    @Scripts.Render("~/Scripts/jqxlistbox.js")
+    @Scripts.Render("~/Scripts/jqxpanel.js")
+    @Scripts.Render("~/Scripts/jqxscrollbar.js")
+    @Scripts.Render("~/Scripts/jqxinput.js")
     @Scripts.Render("~/Scripts/jqxgrid.js")
     @Scripts.Render("~/Scripts/jqxgrid.aggregates.js")
     @Scripts.Render("~/Scripts/jqxgrid.columnsresize.js")
@@ -19,6 +30,186 @@
     @Scripts.Render("~/Scripts/jqxgrid.selection.js")
     @Scripts.Render("~/Scripts/jqxgrid.sort.js")
     @Scripts.Render("~/Scripts/jqxgrid.storage.js")
+
+    <script type="text/javascript">
+        columnNames = ["ID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
+        fieldNames = ["ID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
+
+        $(function () {
+
+            populateTable();
+
+            function init() {
+                $.getJSON('http://10.0.0.136:4000/api/activity/get', function (data) {
+                    response = JSON.parse(data);
+                    populateTable();
+                });
+            }
+
+            function populateTable(response) {
+                gridSource =
+                    {
+                        datatype: "array",
+                        datafields: [
+                            { name: fieldNames[0], type: 'string' },
+                            { name: fieldNames[1], type: 'string' },
+                            { name: fieldNames[2], type: 'string' },
+                            { name: fieldNames[3], type: 'string' },
+                            { name: fieldNames[4], type: 'string' },
+                            { name: fieldNames[5], type: 'string' },
+                            { name: fieldNames[6], type: 'string' },
+                        ],
+                        localdata: response
+                    };
+
+                var mainGridDataAdapter = new $.jqx.dataAdapter(gridSource);
+                var mainGrid = $('#mainGrid');
+                showGrid(mainGrid, mainGridDataAdapter);
+            }
+
+            function showGrid(mainGrid, mainGridDataAdapter) {
+                var pagerRenderer = function (body_name, goToPageSel, rowNumSel) {
+                    var self = this;
+                    var element = $("<div style='margin-right: 10px; margin-top: 5px; width: 100%; height: 100%;'></div>");
+                    var datainfo = $(body_name).jqxGrid('getdatainformation');
+                    var paginginfo = datainfo.paginginformation;
+
+                    var goToPage = $("<div style='padding: 0px; float: right; width:70px; height:20px; '>Go to page:<div style='float: right; margin-right:10px; width: 30px; height: 16px; border:none; font-size:11px; padding: 0px;'><input id=" + goToPageSel + " type=\"text\" value=\"1\"/></div></div>");
+                    goToPage.find('div').addClass('jqx-input jqx-input-classic');
+                    goToPage.width(140);
+                    goToPage.jqxInput();
+
+                    var showRowsDiv = $("<div style='padding: 0px; float: right; width:100px; height:20px; '>Show rows:<div style='float: right; margin-right:10px; width: 30px; height: 16px; border:none; font-size:11px; padding: 0px;'><input id=" + rowNumSel + " type=\"text\" value=\"10\"/></div></div>");
+                    showRowsDiv.find('div').addClass('jqx-input jqx-input-classic');
+                    showRowsDiv.width(140);
+                    showRowsDiv.jqxInput();
+
+                    var leftButton = $("<div style='padding: 0px; float: right;'><div style='margin-left: 7px; width: 5px; height: 16px;'></div></div>");
+                    leftButton.find('div').addClass('jqx-icon-arrow-left');
+                    leftButton.width(20);
+                    leftButton.jqxButton();
+
+                    var rightButton = $("<div style='padding: 0px; margin: 0px 3px; float: right;'><div style='margin-left: 7px; width: 5px; height: 16px;'></div></div>");
+                    rightButton.find('div').addClass('jqx-icon-arrow-right');
+                    rightButton.width(20);
+                    rightButton.jqxButton();
+
+                    rightButton.appendTo(element);
+                    leftButton.appendTo(element);
+
+                    var label = $("<div style='font-size: 11px; margin: -3px 3px; float: right;'></div>");
+                    label.text("1-" + paginginfo.pagesize + ' of ' + datainfo.rowscount);
+                    label.appendTo(element);
+                    showRowsDiv.appendTo(element);
+                    goToPage.appendTo(element);
+
+                    // update buttons states.
+                    var handleStates = function (event, button, className, add) {
+                        button.on(event, function () {
+                            if (add == true) {
+                                button.find('div').addClass(className);
+                            }
+                            else button.find('div').removeClass(className);
+                        });
+                    }
+
+                    /*if (theme != '') {
+                        handleStates('mousedown', rightButton, 'jqx-icon-arrow-right-selected-' + theme, true);
+                        handleStates('mouseup', rightButton, 'jqx-icon-arrow-right-selected-' + theme, false);
+                        handleStates('mousedown', leftButton, 'jqx-icon-arrow-left-selected-' + theme, true);
+                        handleStates('mouseup', leftButton, 'jqx-icon-arrow-left-selected-' + theme, false);
+
+                        handleStates('mouseenter', rightButton, 'jqx-icon-arrow-right-hover-' + theme, true);
+                        handleStates('mouseleave', rightButton, 'jqx-icon-arrow-right-hover-' + theme, false);
+                        handleStates('mouseenter', leftButton, 'jqx-icon-arrow-left-hover-' + theme, true);
+                        handleStates('mouseleave', leftButton, 'jqx-icon-arrow-left-hover-' + theme, false);
+                    }*/
+                    var rowNumSelTag = '#' + rowNumSel;
+                    var goToPageSelTag = '#' + goToPageSel;
+                    rightButton.click(function () {
+                        $(body_name).jqxGrid('gotonextpage');
+                        var datainfo = $(body_name).jqxGrid('getdatainformation');
+                        var paginginfo = datainfo.paginginformation;
+                        $(goToPageSelTag).val(1 + paginginfo.pagenum);
+                    });
+
+                    leftButton.click(function () {
+                        $(body_name).jqxGrid('gotoprevpage');
+                        var datainfo = $(body_name).jqxGrid('getdatainformation');
+                        var paginginfo = datainfo.paginginformation;
+                        $(goToPageSelTag).val(1 + paginginfo.pagenum);
+                    });
+
+                    $(showRowsDiv).on('keypress', function (e) {
+                        var index = parseInt($(rowNumSelTag).val());
+                        if (!isNaN(index) && e.which == 13) {
+                            $(body_name).jqxGrid('pagesize', index);
+                            $(rowNumSelTag).val(index);
+                        }
+                    });
+
+                    $(goToPage).on('keypress', function (e) {
+                        var page = parseInt($(goToPageSelTag).val());
+                        page = page - 1;
+                        if (!isNaN(page) && e.which == 13) {
+                            $(body_name).jqxGrid('gotopage', page);
+                        }
+                    });
+                    $(body_name).on('pagechanged', function () {
+                        var datainfo = $(body_name).jqxGrid('getdatainformation');
+                        var paginginfo = datainfo.paginginformation;
+                        label.text(1 + paginginfo.pagenum * paginginfo.pagesize + "-" + Math.min(datainfo.rowscount, (paginginfo.pagenum + 1) * paginginfo.pagesize) + ' of ' + datainfo.rowscount);
+                        //$('#mainGrid').jqxGrid('autoresizecolumns');
+                    });
+                    return element;
+                }
+
+                var body_page = function () {
+                    return (pagerRenderer("#mainGrid", "goToPageSel_body", "rowNumSel_body"));
+                }
+
+                mainGrid.jqxGrid(
+                    {
+                        width: '100%',
+                        source: mainGridDataAdapter,
+                        selectionmode: 'multiplerowsextended',
+                        sortable: true,
+                        autoheight: true,
+                        autoloadstate: false,
+                        autosavestate: false,
+                        columnsresize: false,
+                        columnsreorder: false,
+                        showfilterrow: false,
+                        enabletooltips: true,
+                        filterable: false,
+                        rowsheight: 20,
+                        /*pageable: false,
+                        pagerheight: 40,
+                        pagesize: 10,
+                        pagesizeoptions: ['10'],
+                        pagerrenderer: body_page,*/
+                        columnsheight: 19,
+                        //ready: function () {
+                        //    $('#mainGrid').jqxGrid('autoresizecolumns');
+                        //},
+                        columns: [
+                            { text: columnNames[0], datafield: fieldNames[0], width: '5%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[1], datafield: fieldNames[1], width: '15%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[2], datafield: fieldNames[2], width: '15%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[3], datafield: fieldNames[3], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[4], datafield: fieldNames[4], width: '35%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[5], datafield: fieldNames[5], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[6], datafield: fieldNames[6], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
+                        ]
+                    });
+
+                for (var i = 0; i < fieldNames.length; i++) {
+                    mainGrid.jqxGrid('showcolumn', fieldNames[i]);
+                }
+            }
+
+        });
+    </script>
 }
 
 <style>
@@ -54,31 +245,15 @@
 
 <html>
 <head>
-    <title>Homepage</title>
-    <script type="text/javascript">
-        columnNames = ["Action", "Entity Type", "Criterion", "Operator", "Units", "Value", "Lower Bound", "Upper Bound", "Coordinate System"];
-    </script>
+    <title>MyMoney</title>
+    <link rel="stylesheet" href="~/Styles/jqx.base.css" type="text/css" />
 </head>
+
 <body>
+    <h1>Account Activity</h1>
     <div id="mainGrid">
 
     </div>
-    <h1>Account Activity</h1>
-    <table border="1">
-        <thead>
-            <tr><th width="10%">ID</th><th width="20%">Account</th><th width="40%">Description</th><th width="20%">Date</th></tr>
-        </thead>
-    </table>
-    <div id="infoTable">
-        <div id="table-wrapper">
-            <div id="table-scroll">
-                <table border="1">
-                    <tbody>
-                        <tr class="loading"><td colspan="4">loading...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 </body>
+
 </html>
