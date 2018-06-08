@@ -32,8 +32,8 @@
     @Scripts.Render("~/Scripts/jqxgrid.storage.js")
 
     <script type="text/javascript">
-        columnNames = ["ID", "Name", "Bank", "Type"];
-        fieldNames = ["ID", "Name", "Bank", "Type"];
+        columnNames = ["ID", "Name", "Bank", "Type", "Balance"];
+        fieldNames = ["ID", "Name", "Bank", "Type", "Balance"];
 
 
 
@@ -57,6 +57,7 @@
                             { name: fieldNames[1], type: 'string' },
                             { name: fieldNames[2], type: 'string' },
                             { name: fieldNames[3], type: 'string' },
+                            { name: fieldNames[4], type: 'string' },
                         ]
                     };
 
@@ -192,10 +193,11 @@
                         //    $('#mainGrid').jqxGrid('autoresizecolumns');
                         //},
                         columns: [
-                            { text: columnNames[0], datafield: fieldNames[0], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[1], datafield: fieldNames[1], width: '30%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[2], datafield: fieldNames[2], width: '30%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[3], datafield: fieldNames[3], width: '30%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[0], datafield: fieldNames[0], width: '8%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[1], datafield: fieldNames[1], width: '23%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[2], datafield: fieldNames[2], width: '23%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[3], datafield: fieldNames[3], width: '23%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[4], datafield: fieldNames[4], width: '23%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'c2'},
                         ]
                     });
 
@@ -207,7 +209,29 @@
         });
 
         function addRow() {
-            $('#mainGrid').jqxGrid('addrow', null, { "ID": 0, "Name": "PNC Checking", "Bank": "PNC", "Type": "Checking"});
+            
+            var modal = document.getElementById('myModal');
+            modal.style.display = "block";
+
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        function submitRow() {
+            $('#mainGrid').jqxGrid('addrow', null, { "ID": 0, "Name": $('#accountName')[0].value, "Bank": $('#accountBank')[0].value, "Type": $('#accountType')[0].value, "Balance": Number($('#accountBalance')[0].value) });
+            $('#accountName')[0].value = "";
+            $('#accountBank')[0].value = "";
+            $('#accountType')[0].value = "";
+            $('#accountBalance')[0].value = "";
+            var modal = document.getElementById('myModal');
+            modal.style.display = "none";
         }
     </script>
 }
@@ -241,6 +265,43 @@
     #table-wrapper table {
         width: 100%;
     }
+
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 
 <html>
@@ -252,9 +313,38 @@
 <body>
     <h1>Accounts</h1>
     <button id="addRowButton" onclick="addRow()" >Add Account</button>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <table id="newAccount">
+                <tr>
+                    <td colspan="2"><h2>New Account</h2><br/><br/></td>
+                </tr>
+                <tr>
+                    <td>Account Name: </td>
+                    <td><input type="text" id="accountName" /></td>
+                </tr>
+                <tr>
+                    <td>Bank: </td>
+                    <td><input type="text" id="accountBank" /></td>
+                </tr>
+                <tr>
+                    <td>Type: </td>
+                    <td><input type="text" id="accountType" /></td>
+                </tr>
+                <tr>
+                    <td>Initial Balance: </td>
+                    <td><input type="text" id="accountBalance" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><br/><button id="submitRowButton" onclick="submitRow()">Create Account</button></td>
+                </tr>
+            </table>
+            <br/>
+        </div>
+    </div>
     <br/>
     <br/>
     <div id="mainGrid"></div>
 </body>
-
 </html>
