@@ -22,5 +22,10 @@ namespace MyMoney.Controllers
 
             return View();
         }
+
+        public ActionResult Accounts()
+        {
+            return View();
+        }
     }
 }

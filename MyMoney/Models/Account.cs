@@ -3,21 +3,14 @@ using MyMoney.Interfaces;
 
 namespace MyMoney.Models
 {
-    public class Account : IAccount
+    public class Account
     {
         public int AccountID { get; set; }
         public string Name { get; set; }
-        public string Provider { get; set; }
-        public string AccountType { get; set; }
-        public List<IAccountEvent> AccountEvents;
+        public string Bank { get; set; }
+        public string Type { get; set; }
+        //public List<IAccountEvent> AccountEvents;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public Account()
-        {
-            AccountEvents = new List<IAccountEvent>();
-        }
 
         /// <summary>
         /// Constructor with ID
@@ -34,16 +27,16 @@ namespace MyMoney.Models
         /// <returns>String representation of account type</returns>
         public string GetAccountType()
         {
-            return AccountType;
+            return Type;
         }
 
         /// <summary>
         /// Get the provider of the account
         /// </summary>
         /// <returns>Name of account provider</returns>
-        public string GetProvider()
+        public string GetBank()
         {
-            return Provider;
+            return Bank;
         }
 
         /// <summary>
@@ -55,15 +48,5 @@ namespace MyMoney.Models
             return Name;
         }
 
-        /// <summary>
-        /// Add new account event to this account
-        /// </summary>
-        /// <param name="Event">Event to add</param>
-        /// <returns>Status of add</returns>
-        public bool AddEvent(IAccountEvent Event)
-        {
-            AccountEvents.Add(Event);
-            return true;
-        }
     }
 }

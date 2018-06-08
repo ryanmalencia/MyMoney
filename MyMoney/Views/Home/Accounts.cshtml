@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "MyMoney - Account Activity";
+    ViewBag.Title = "MyMoney - Accounts";
 }
 @section scripts{
     @Scripts.Render("~/bundles/jquery")
@@ -32,8 +32,10 @@
     @Scripts.Render("~/Scripts/jqxgrid.storage.js")
 
     <script type="text/javascript">
-        columnNames = ["ID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
-        fieldNames = ["ID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
+        columnNames = ["ID", "Name", "Bank", "Type"];
+        fieldNames = ["ID", "Name", "Bank", "Type"];
+
+
 
         $(function () {
 
@@ -51,15 +53,11 @@
                     {
                         datatype: "array",
                         datafields: [
-                            { name: fieldNames[0], type: 'string' },
+                            { name: fieldNames[0], type: 'number' },
                             { name: fieldNames[1], type: 'string' },
                             { name: fieldNames[2], type: 'string' },
                             { name: fieldNames[3], type: 'string' },
-                            { name: fieldNames[4], type: 'string' },
-                            { name: fieldNames[5], type: 'string' },
-                            { name: fieldNames[6], type: 'string' },
-                        ],
-                        localdata: response
+                        ]
                     };
 
                 var mainGridDataAdapter = new $.jqx.dataAdapter(gridSource);
@@ -174,6 +172,7 @@
                         source: mainGridDataAdapter,
                         selectionmode: 'multiplerowsextended',
                         sortable: true,
+                        editable: false,
                         autoheight: true,
                         autoloadstate: false,
                         autosavestate: false,
@@ -193,13 +192,10 @@
                         //    $('#mainGrid').jqxGrid('autoresizecolumns');
                         //},
                         columns: [
-                            { text: columnNames[0], datafield: fieldNames[0], width: '5%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[1], datafield: fieldNames[1], width: '15%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[2], datafield: fieldNames[2], width: '15%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[3], datafield: fieldNames[3], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[4], datafield: fieldNames[4], width: '35%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[5], datafield: fieldNames[5], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[6], datafield: fieldNames[6], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[0], datafield: fieldNames[0], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[1], datafield: fieldNames[1], width: '30%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[2], datafield: fieldNames[2], width: '30%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[3], datafield: fieldNames[3], width: '30%', hidden: true, align: 'center', cellsalign: 'center' },
                         ]
                     });
 
@@ -209,6 +205,10 @@
             }
 
         });
+
+        function addRow() {
+            $('#mainGrid').jqxGrid('addrow', null, { "ID": 0, "Name": "PNC Checking", "Bank": "PNC", "Type": "Checking"});
+        }
     </script>
 }
 
@@ -250,10 +250,11 @@
 </head>
 
 <body>
-    <h1>Account Activity</h1>
-    <div id="mainGrid">
-
-    </div>
+    <h1>Accounts</h1>
+    <button id="addRowButton" onclick="addRow()" >Add Account</button>
+    <br/>
+    <br/>
+    <div id="mainGrid"></div>
 </body>
 
 </html>
