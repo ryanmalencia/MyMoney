@@ -12,6 +12,7 @@ namespace MyMoney.DAL
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountEvent> AccountEvents { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

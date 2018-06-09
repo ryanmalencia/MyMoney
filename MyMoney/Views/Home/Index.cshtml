@@ -1,12 +1,11 @@
 ﻿@{
-    ViewBag.Title = "MyMoney - Account Activity";
+    ViewBag.Title = "MyMoney - Activity";
 }
 @section scripts{
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/Scripts/jquery-3.3.1.min.js")
     @Scripts.Render("~/Scripts/jquery.signalR-2.2.3.js")
     @Scripts.Render("~/signalr/hubs")
-    @Scripts.Render("~/Scripts/MainScript1.0.0.js")
     @Scripts.Render("~/Scripts/jqxcore.js")
     @Scripts.Render("~/Scripts/jqxdata.js")
     @Scripts.Render("~/Scripts/jqxdate.js")
@@ -32,34 +31,33 @@
     @Scripts.Render("~/Scripts/jqxgrid.storage.js")
 
     <script type="text/javascript">
-        columnNames = ["ID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
-        fieldNames = ["ID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
+        columnNames = ["TransactionID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
+        fieldNames = ["TransactionID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
 
         $(function () {
-
-            populateTable();
-
             function init() {
-                $.getJSON('http://10.0.0.136:4000/api/activity/get', function (data) {
+                $.getJSON('http://10.0.0.136/api/transaction/get', function (data) {
                     response = JSON.parse(data);
-                    populateTable();
+                    populateTable(response);
                 });
             }
+
+            init();
 
             function populateTable(response) {
                 gridSource =
                     {
                         datatype: "array",
                         datafields: [
-                            { name: fieldNames[0], type: 'string' },
+                            { name: fieldNames[0], type: 'number' },
                             { name: fieldNames[1], type: 'string' },
                             { name: fieldNames[2], type: 'string' },
                             { name: fieldNames[3], type: 'string' },
                             { name: fieldNames[4], type: 'string' },
-                            { name: fieldNames[5], type: 'string' },
-                            { name: fieldNames[6], type: 'string' },
+                            { name: fieldNames[5], type: 'number' },
+                            { name: fieldNames[6], type: "date", format: 'MM.dd.yyyy'  },
                         ],
-                        localdata: response
+                        localdata: response.Transactions
                     };
 
                 var mainGridDataAdapter = new $.jqx.dataAdapter(gridSource);
@@ -197,18 +195,43 @@
                             { text: columnNames[1], datafield: fieldNames[1], width: '15%', hidden: true, align: 'center', cellsalign: 'center' },
                             { text: columnNames[2], datafield: fieldNames[2], width: '15%', hidden: true, align: 'center', cellsalign: 'center' },
                             { text: columnNames[3], datafield: fieldNames[3], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[4], datafield: fieldNames[4], width: '35%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[5], datafield: fieldNames[5], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[6], datafield: fieldNames[6], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[4], datafield: fieldNames[4], width: '40%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[5], datafield: fieldNames[5], width: '10%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'c2' },
+                            { text: columnNames[6], datafield: fieldNames[6], width: '10%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'd' },
                         ]
                     });
 
-                for (var i = 0; i < fieldNames.length; i++) {
+                for (var i = 1; i < fieldNames.length; i++) {
                     mainGrid.jqxGrid('showcolumn', fieldNames[i]);
                 }
             }
 
         });
+        function addRow() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = "block";
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        function submitRow() {
+            $('#mainGrid').jqxGrid('addrow', null, { "ID": 0, "Bank": $('#transactionBank')[0].value, "Account": $('#transactionAccount')[0].value, "Type": $('#transactionType')[0].value, "Description": $('#transactionDescription')[0].value, "Amount": Number($('#transactionAmount')[0].value), "Date": $('#transactionDate')[0].value});
+            $('#transactionBank')[0].value = "";
+            $('#transactionAccount')[0].value = "";
+            $('#transactionType')[0].value = "";
+            $('#transactionDescription')[0].value = "";
+            $('#transactionAmount')[0].value = "";
+            $('#transactionDate')[0].value = "";
+            var modal = document.getElementById('myModal');
+            modal.style.display = "none";
+        }
     </script>
 }
 
@@ -241,6 +264,43 @@
     #table-wrapper table {
         width: 100%;
     }
+
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 
 <html>
@@ -250,10 +310,49 @@
 </head>
 
 <body>
-    <h1>Account Activity</h1>
-    <div id="mainGrid">
-
+    <h1>Activity</h1>
+    <button id="addRowButton" onclick="addRow()">Add Transaction</button>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <table id="newAccount">
+                <tr>
+                    <td colspan="2"><h2>New Transaction</h2><br /><br /></td>
+                </tr>
+                <tr>
+                    <td>Bank: </td>
+                    <td><input type="text" id="transactionBank" /></td>
+                </tr>
+                <tr>
+                    <td>Account: </td>
+                    <td><input type="text" id="transactionAccount" /></td>
+                </tr>
+                <tr>
+                    <td>Type: </td>
+                    <td><input type="text" id="transactionType" /></td>
+                </tr>
+                <tr>
+                    <td>Description: </td>
+                    <td><input type="text" id="transactionDescription" /></td>
+                </tr>
+                <tr>
+                    <td>Amount: </td>
+                    <td><input type="text" id="transactionAmount" /></td>
+                </tr>
+                <tr>
+                    <td>Date: </td>
+                    <td><input type="text" id="transactionDate" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><br /><button id="submitRowButton" onclick="submitRow()">Create Transaction</button></td>
+                </tr>
+            </table>
+            <br />
+        </div>
     </div>
+    <br />
+    <br />
+    <div id="mainGrid"></div>
 </body>
 
 </html>

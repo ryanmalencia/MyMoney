@@ -68,6 +68,9 @@
     <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -136,9 +139,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -191,16 +191,24 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\ActivityController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DAL\DataContext.cs" />
     <Compile Include="DAL\DataInitializer.cs" />
+    <Compile Include="DBInteraction\TransactionDBInteraction.cs" />
+    <Compile Include="DBInteraction\AccountDBInteraction.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IAccount.cs" />
     <Compile Include="Interfaces\IAccountEvent.cs" />
+    <Compile Include="Logic\TransactionLogic.cs" />
+    <Compile Include="Logic\AccountLogic.cs" />
+    <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\TransactionCollection.cs" />
+    <Compile Include="Models\AccountCollection.cs" />
     <Compile Include="Models\AccountEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalR\Activity.cs" />
@@ -289,8 +297,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DBInteraction\" />
-    <Folder Include="Logic\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

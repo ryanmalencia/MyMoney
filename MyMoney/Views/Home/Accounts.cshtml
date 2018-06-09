@@ -6,7 +6,6 @@
     @Scripts.Render("~/Scripts/jquery-3.3.1.min.js")
     @Scripts.Render("~/Scripts/jquery.signalR-2.2.3.js")
     @Scripts.Render("~/signalr/hubs")
-    @Scripts.Render("~/Scripts/MainScript1.0.0.js")
     @Scripts.Render("~/Scripts/jqxcore.js")
     @Scripts.Render("~/Scripts/jqxdata.js")
     @Scripts.Render("~/Scripts/jqxdate.js")
@@ -32,21 +31,20 @@
     @Scripts.Render("~/Scripts/jqxgrid.storage.js")
 
     <script type="text/javascript">
-        columnNames = ["ID", "Name", "Bank", "Type", "Balance"];
-        fieldNames = ["ID", "Name", "Bank", "Type", "Balance"];
+        columnNames = ["AccountID", "Name", "Bank", "Type", "Amount"];
+        fieldNames = ["AccountID", "Name", "Bank", "Type", "Amount"];
 
 
 
         $(function () {
-
-            populateTable();
-
             function init() {
-                $.getJSON('http://10.0.0.136:4000/api/activity/get', function (data) {
+                $.getJSON('http://10.0.0.136/api/account/get', function (data) {
                     response = JSON.parse(data);
-                    populateTable();
+                    populateTable(response);
                 });
             }
+
+            init();
 
             function populateTable(response) {
                 gridSource =
@@ -57,8 +55,9 @@
                             { name: fieldNames[1], type: 'string' },
                             { name: fieldNames[2], type: 'string' },
                             { name: fieldNames[3], type: 'string' },
-                            { name: fieldNames[4], type: 'string' },
-                        ]
+                            { name: fieldNames[4], type: 'number' },
+                        ],
+                        localdata: response.Accounts
                     };
 
                 var mainGridDataAdapter = new $.jqx.dataAdapter(gridSource);

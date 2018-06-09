@@ -9,8 +9,15 @@ namespace MyMoney.Models
         public string Name { get; set; }
         public string Bank { get; set; }
         public string Type { get; set; }
-        //public List<IAccountEvent> AccountEvents;
+        public string Amount { get; set; }
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public Account()
+        {
+
+        }
 
         /// <summary>
         /// Constructor with ID

@@ -13,7 +13,7 @@ namespace MyMoney.SignalR
         private readonly ConcurrentDictionary<string, IAccountEvent> _information = new ConcurrentDictionary<string, IAccountEvent>();
         private readonly object _informationLock = new object();
         private readonly TimeSpan _updateInterval = TimeSpan.FromMilliseconds(1000);
-        private volatile bool _updatingInformation = false;
+        //private volatile bool _updatingInformation = false;
 
         private Activity(IHubConnectionContext<dynamic> clients)
         {
