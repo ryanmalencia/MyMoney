@@ -2,6 +2,7 @@
 using System.Web.Http.Cors;
 using Newtonsoft.Json;
 using MyMoney.Logic;
+using MyMoney.Models;
 
 namespace MyMoney.Controllers
 {
@@ -15,6 +16,21 @@ namespace MyMoney.Controllers
         public IHttpActionResult Get()
         {
             return Ok(JsonConvert.SerializeObject(TransactionLogic.Get()));
+        }
+
+        [Route("api/transaction/put")]
+        [HttpPut]
+        public IHttpActionResult Put(Transaction transaction)
+        {
+            int status = TransactionLogic.Put(transaction);
+            if (status == 0)
+            {
+                return BadRequest("0");
+            }
+            else
+            {
+                return Ok(status);
+            }
         }
     }
 }

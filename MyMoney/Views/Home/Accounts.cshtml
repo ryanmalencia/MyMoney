@@ -59,6 +59,8 @@
                         ],
                         localdata: response.Accounts,
                         addrow: function (rowid, rowdata, position, commit) {
+                            var loading = document.getElementById('addLoading');
+                            loading.style.display = "block";
                             $.ajax({
                                 url: "http://10.0.0.136/api/account/put",
                                 method: 'PUT',
@@ -68,15 +70,19 @@
                                     rowdata.AccountID = Number(data);
                                     rowid = Number(data);
                                     commit(true);
+                                    var loading = document.getElementById('addLoading');
+                                    loading.style.display = "none";
+                                    var modal = document.getElementById('myModal');
+                                    modal.style.display = "none";
                                 },
                                 error: function (data) {
                                     commit(false);
+                                    var loading = document.getElementById('addLoading');
+                                    loading.style.display = "none";
+                                    var modal = document.getElementById('myModal');
+                                    modal.style.display = "none";
                                 }
                             });
-                            var loading = document.getElementById('addLoading');
-                            loading.style.display = "none";
-                            var modal = document.getElementById('myModal');
-                            modal.style.display = "none";
                         }
                     };
 
@@ -213,15 +219,15 @@
                         //},
                         columns: [
                             { text: columnNames[0], datafield: fieldNames[0], width: '8%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[1], datafield: fieldNames[1], width: '23%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[2], datafield: fieldNames[2], width: '23%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[3], datafield: fieldNames[3], width: '23%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[4], datafield: fieldNames[4], width: '23%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'c2'},
+                            { text: columnNames[1], datafield: fieldNames[1], width: '25%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[2], datafield: fieldNames[2], width: '25%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[3], datafield: fieldNames[3], width: '25%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[4], datafield: fieldNames[4], width: '25%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'c2'},
                         ],
 
                     });
 
-                for (var i = 0; i < fieldNames.length; i++) {
+                for (var i = 1; i < fieldNames.length; i++) {
                     mainGrid.jqxGrid('showcolumn', fieldNames[i]);
                 }
             }
@@ -248,8 +254,6 @@
             $('#accountBank')[0].value = "";
             $('#accountType')[0].value = "";
             $('#accountBalance')[0].value = "";
-            var loading = document.getElementById('addLoading');
-            loading.style.display = "block";
         }
     </script>
 }
@@ -366,6 +370,6 @@
     </div>
     <br/>
     <br/>
-    <div id="mainGrid"></div>
+    <div id="mainGrid" style="opacity:.99;"></div>
 </body>
 </html>

@@ -1,4 +1,5 @@
-﻿using MyMoney.DAL;
+﻿using System.Collections.Generic;
+using MyMoney.DAL;
 using MyMoney.Models;
 
 namespace MyMoney.DBInteraction
@@ -30,10 +31,24 @@ namespace MyMoney.DBInteraction
         }
 
         /// <summary>
+        /// Get names of all accounts
+        /// </summary>
+        /// <returns>List of names</returns>
+        public List<string> GetNames()
+        {
+            List<string> Names = new List<string>();
+            foreach (Account account in DB.Accounts)
+            {
+                Names.Add(account.Name);
+            }
+            return Names;
+        }
+
+        /// <summary>
         /// Put new account in to database
         /// </summary>
         /// <param name="account">Account to add</param>
-        /// <returns>Success/failure of add</returns>
+        /// <returns>ID of new account</returns>
         public int Put(Account account)
         {
             Account acc = DB.Accounts.Add(account);

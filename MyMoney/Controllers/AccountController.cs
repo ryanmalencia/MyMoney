@@ -18,6 +18,13 @@ namespace MyMoney.Controllers
             return Ok(JsonConvert.SerializeObject(AccountLogic.Get()));
         }
 
+        [Route("api/account/get/names")]
+        [HttpGet]
+        public IHttpActionResult GetNames()
+        {
+            return Ok(JsonConvert.SerializeObject(AccountLogic.GetNames()));
+        }
+
         [Route("api/account/put")]
         [HttpPut]
         public IHttpActionResult Put(Account account)

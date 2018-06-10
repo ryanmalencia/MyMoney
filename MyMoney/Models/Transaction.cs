@@ -5,7 +5,6 @@ namespace MyMoney.Models
     public class Transaction
     {
         public int TransactionID { get; set; }
-        public string Bank { get; set; }
         public string Account { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
@@ -36,15 +35,6 @@ namespace MyMoney.Models
         public string GetTransactionType()
         {
             return Type;
-        }
-
-        /// <summary>
-        /// Get the provider of the account
-        /// </summary>
-        /// <returns>Name of transaction account provider</returns>
-        public string GetBank()
-        {
-            return Bank;
         }
     }
 }

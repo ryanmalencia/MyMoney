@@ -28,5 +28,25 @@ namespace MyMoney.DBInteraction
             }
             return Transactions;
         }
+
+        /// <summary>
+        /// Put new transaction
+        /// </summary>
+        /// <param name="transaction">Transaction to add</param>
+        /// <returns>ID of new transaction</returns>
+        public int Put(Transaction transaction)
+        {
+            Transaction trans = DB.Transactions.Add(transaction);
+            int i = 0;
+            i = DB.SaveChanges();
+            if (i == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return trans.TransactionID;
+            }
+        }
     }
 }

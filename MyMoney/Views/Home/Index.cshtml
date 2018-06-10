@@ -31,14 +31,24 @@
     @Scripts.Render("~/Scripts/jqxgrid.storage.js")
 
     <script type="text/javascript">
-        columnNames = ["TransactionID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
-        fieldNames = ["TransactionID", "Bank", "Account", "Type", "Description", "Amount", "Date"];
+        columnNames = ["TransactionID", "Account", "Type", "Description", "Amount", "Date"];
+        fieldNames = ["TransactionID", "Account", "Type", "Description", "Amount", "Date"];
 
         $(function () {
             function init() {
                 $.getJSON('http://10.0.0.136/api/transaction/get', function (data) {
-                    response = JSON.parse(data);
+                    var response = JSON.parse(data);
                     populateTable(response);
+                });
+
+                $.getJSON('http://10.0.0.136/api/account/get/names', function (data) {
+                    var response = JSON.parse(data);
+                    $("#transactionAccount").jqxDropDownList({
+                        source: response,
+                        width: '175px',
+                        height: '25px',
+                        selectedIndex: 0
+                    });
                 });
             }
 
@@ -53,13 +63,35 @@
                             { name: fieldNames[1], type: 'string' },
                             { name: fieldNames[2], type: 'string' },
                             { name: fieldNames[3], type: 'string' },
-                            { name: fieldNames[4], type: 'string' },
-                            { name: fieldNames[5], type: 'number' },
-                            { name: fieldNames[6], type: "date", format: 'MM.dd.yyyy'  },
+                            { name: fieldNames[4], type: 'number' },
+                            { name: fieldNames[5], type: "date", format: 'MM.dd.yyyy'  },
                         ],
                         localdata: response.Transactions,
                         addrow: function (rowid, rowdata, position, commit) {
-                            commit(true);
+                            var loading = document.getElementById('addLoading');
+                            loading.style.display = "block";
+                            $.ajax({
+                                url: "http://10.0.0.136/api/transaction/put",
+                                method: 'PUT',
+                                contentType: "application/json",
+                                data: JSON.stringify(rowdata),
+                                success: function (data) {
+                                    rowdata.TransactionID = Number(data);
+                                    rowid = Number(data);
+                                    commit(true);
+                                    var loading = document.getElementById('addLoading');
+                                    loading.style.display = "none";
+                                    var modal = document.getElementById('myModal');
+                                    modal.style.display = "none";
+                                },
+                                error: function (data) {
+                                    commit(false);
+                                    var loading = document.getElementById('addLoading');
+                                    loading.style.display = "none";
+                                    var modal = document.getElementById('myModal');
+                                    modal.style.display = "none";
+                                }
+                            });
                         }
                     };
 
@@ -196,11 +228,10 @@
                         columns: [
                             { text: columnNames[0], datafield: fieldNames[0], width: '5%', hidden: true, align: 'center', cellsalign: 'center' },
                             { text: columnNames[1], datafield: fieldNames[1], width: '15%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[2], datafield: fieldNames[2], width: '15%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[3], datafield: fieldNames[3], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[4], datafield: fieldNames[4], width: '40%', hidden: true, align: 'center', cellsalign: 'center' },
-                            { text: columnNames[5], datafield: fieldNames[5], width: '10%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'c2' },
-                            { text: columnNames[6], datafield: fieldNames[6], width: '10%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'd' },
+                            { text: columnNames[2], datafield: fieldNames[2], width: '10%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[3], datafield: fieldNames[3], width: '55%', hidden: true, align: 'center', cellsalign: 'center' },
+                            { text: columnNames[4], datafield: fieldNames[4], width: '10%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'c2' },
+                            { text: columnNames[5], datafield: fieldNames[5], width: '10%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'd' },
                         ],
                     });
 
@@ -225,15 +256,12 @@
         }
 
         function submitRow() {
-            $('#mainGrid').jqxGrid('addrow', null, { "ID": 0, "Bank": $('#transactionBank')[0].value, "Account": $('#transactionAccount')[0].value, "Type": $('#transactionType')[0].value, "Description": $('#transactionDescription')[0].value, "Amount": Number($('#transactionAmount')[0].value), "Date": $('#transactionDate')[0].value});
-            $('#transactionBank')[0].value = "";
+            $('#mainGrid').jqxGrid('addrow', null, { "TransactionID": 0, "Account": $('#transactionAccount')[0].textContent, "Type": $('#transactionType')[0].value, "Description": $('#transactionDescription')[0].value, "Amount": Number($('#transactionAmount')[0].value), "Date": $('#transactionDate')[0].value});
             $('#transactionAccount')[0].value = "";
             $('#transactionType')[0].value = "";
             $('#transactionDescription')[0].value = "";
             $('#transactionAmount')[0].value = "";
             $('#transactionDate')[0].value = "";
-            var modal = document.getElementById('myModal');
-            modal.style.display = "none";
         }
     </script>
 }
@@ -323,12 +351,8 @@
                     <td colspan="2"><h2>New Transaction</h2><br /><br /></td>
                 </tr>
                 <tr>
-                    <td>Bank: </td>
-                    <td><input type="text" id="transactionBank" /></td>
-                </tr>
-                <tr>
                     <td>Account: </td>
-                    <td><input type="text" id="transactionAccount" /></td>
+                    <td><div id="transactionAccount" style="margin: 0 auto;"></div></td>
                 </tr>
                 <tr>
                     <td>Type: </td>
@@ -349,13 +373,15 @@
                 <tr>
                     <td colspan="2"><br /><button id="submitRowButton" onclick="submitRow()">Create Transaction</button></td>
                 </tr>
+                <tr>
+                    <td colspan="2" style="display:none;" id="addLoading"><img src="~/Images/loading.gif" /></td>
+                </tr>
             </table>
             <br />
         </div>
     </div>
     <br />
     <br />
-    <div id="mainGrid"></div>
+    <div id="mainGrid" style="opacity:.99;"></div>
 </body>
-
 </html>

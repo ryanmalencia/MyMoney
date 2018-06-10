@@ -16,5 +16,15 @@ namespace MyMoney.Logic
         {
             return TransactionDB.Get();
         }
+
+        /// <summary>
+        /// Put new transaction
+        /// </summary>
+        /// <param name="transaction">Transaction to add</param>
+        /// <returns>ID of new transaction</returns>
+        public int Put(Transaction transaction)
+        {
+            return TransactionDB.Put(transaction);
+        }
     }
 }
