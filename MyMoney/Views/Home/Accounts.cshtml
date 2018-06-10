@@ -31,8 +31,8 @@
     @Scripts.Render("~/Scripts/jqxgrid.storage.js")
 
     <script type="text/javascript">
-        columnNames = ["AccountID", "Name", "Bank", "Type", "Amount"];
-        fieldNames = ["AccountID", "Name", "Bank", "Type", "Amount"];
+        columnNames = ["AccountID", "Name", "Bank", "Type", "Balance"];
+        fieldNames = ["AccountID", "Name", "Bank", "Type", "Balance"];
 
 
 
@@ -57,7 +57,23 @@
                             { name: fieldNames[3], type: 'string' },
                             { name: fieldNames[4], type: 'number' },
                         ],
-                        localdata: response.Accounts
+                        localdata: response.Accounts,
+                        addrow: function (rowid, rowdata, position, commit) {
+                            $.ajax({
+                                url: "http://10.0.0.136/api/account/put",
+                                method: 'PUT',
+                                contentType: "application/json",
+                                data: JSON.stringify(rowdata),
+                                success: function (data) {
+                                    rowdata.AccountID = Number(data);
+                                    rowid = Number(data);
+                                    commit(true);
+                                },
+                                error: function (data) {
+                                    commit(false);
+                                }
+                            });
+                        }
                     };
 
                 var mainGridDataAdapter = new $.jqx.dataAdapter(gridSource);
@@ -197,7 +213,8 @@
                             { text: columnNames[2], datafield: fieldNames[2], width: '23%', hidden: true, align: 'center', cellsalign: 'center' },
                             { text: columnNames[3], datafield: fieldNames[3], width: '23%', hidden: true, align: 'center', cellsalign: 'center' },
                             { text: columnNames[4], datafield: fieldNames[4], width: '23%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'c2'},
-                        ]
+                        ],
+
                     });
 
                 for (var i = 0; i < fieldNames.length; i++) {
@@ -222,7 +239,7 @@
         }
 
         function submitRow() {
-            $('#mainGrid').jqxGrid('addrow', null, { "ID": 0, "Name": $('#accountName')[0].value, "Bank": $('#accountBank')[0].value, "Type": $('#accountType')[0].value, "Balance": Number($('#accountBalance')[0].value) });
+            $('#mainGrid').jqxGrid('addrow', null, { "AccountID": 0, "Name": $('#accountName')[0].value, "Bank": $('#accountBank')[0].value, "Type": $('#accountType')[0].value, "Balance": Number($('#accountBalance')[0].value) });
             $('#accountName')[0].value = "";
             $('#accountBank')[0].value = "";
             $('#accountType')[0].value = "";

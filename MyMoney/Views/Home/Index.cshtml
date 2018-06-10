@@ -57,7 +57,10 @@
                             { name: fieldNames[5], type: 'number' },
                             { name: fieldNames[6], type: "date", format: 'MM.dd.yyyy'  },
                         ],
-                        localdata: response.Transactions
+                        localdata: response.Transactions,
+                        addrow: function (rowid, rowdata, position, commit) {
+                            commit(true);
+                        }
                     };
 
                 var mainGridDataAdapter = new $.jqx.dataAdapter(gridSource);
@@ -198,7 +201,7 @@
                             { text: columnNames[4], datafield: fieldNames[4], width: '40%', hidden: true, align: 'center', cellsalign: 'center' },
                             { text: columnNames[5], datafield: fieldNames[5], width: '10%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'c2' },
                             { text: columnNames[6], datafield: fieldNames[6], width: '10%', hidden: true, align: 'center', cellsalign: 'center', cellsformat: 'd' },
-                        ]
+                        ],
                     });
 
                 for (var i = 1; i < fieldNames.length; i++) {

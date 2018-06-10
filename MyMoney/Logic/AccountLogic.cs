@@ -16,5 +16,15 @@ namespace MyMoney.Logic
         {
             return AccountDB.Get();
         }
+
+        /// <summary>
+        /// Put new account
+        /// </summary>
+        /// <param name="account">Account to add</param>
+        /// <returns>Success/failure</returns>
+        public int Put(Account account)
+        {
+            return AccountDB.Put(account);
+        }
     }
 }

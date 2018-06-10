@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using MyMoney.Interfaces;
-
-namespace MyMoney.Models
+﻿namespace MyMoney.Models
 {
     public class Account
     {
@@ -9,7 +6,7 @@ namespace MyMoney.Models
         public string Name { get; set; }
         public string Bank { get; set; }
         public string Type { get; set; }
-        public string Amount { get; set; }
+        public double Balance { get; set; }
 
         /// <summary>
         /// Default constructor

@@ -28,5 +28,25 @@ namespace MyMoney.DBInteraction
             }
             return Accounts;
         }
+
+        /// <summary>
+        /// Put new account in to database
+        /// </summary>
+        /// <param name="account">Account to add</param>
+        /// <returns>Success/failure of add</returns>
+        public int Put(Account account)
+        {
+            Account acc = DB.Accounts.Add(account);
+            int i = 0;
+            i = DB.SaveChanges();
+            if (i == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return acc.AccountID;
+            }
+        }
     }
 }
