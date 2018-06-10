@@ -1,5 +1,8 @@
 ﻿namespace MyMoney.Models
 {
+    /// <summary>
+    /// Model of an Account
+    /// </summary>
     public class Account
     {
         public int AccountID { get; set; }

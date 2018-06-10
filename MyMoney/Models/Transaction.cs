@@ -2,6 +2,9 @@
 
 namespace MyMoney.Models
 {
+    /// <summary>
+    /// Model of a Transaction
+    /// </summary>
     public class Transaction
     {
         public int TransactionID { get; set; }
