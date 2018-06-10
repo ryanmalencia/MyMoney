@@ -8,7 +8,7 @@ namespace MyMoney.Models
         public string Account { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
-        public string Amount { get; set; }
+        public double Amount { get; set; }
         public DateTime Date { get; set; }
 
         /// <summary>

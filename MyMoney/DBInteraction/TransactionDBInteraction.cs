@@ -1,4 +1,5 @@
-﻿using MyMoney.DAL;
+﻿using System.Linq;
+using MyMoney.DAL;
 using MyMoney.Models;
 
 namespace MyMoney.DBInteraction
@@ -31,13 +32,16 @@ namespace MyMoney.DBInteraction
 
         /// <summary>
         /// Put new transaction
+        /// Alter balance of associated account
         /// </summary>
         /// <param name="transaction">Transaction to add</param>
         /// <returns>ID of new transaction</returns>
         public int Put(Transaction transaction)
         {
             Transaction trans = DB.Transactions.Add(transaction);
+            var Account = DB.Accounts.FirstOrDefault(a => a.Name == transaction.Account);
             int i = 0;
+            Account.Balance += transaction.Amount;
             i = DB.SaveChanges();
             if (i == 0)
             {

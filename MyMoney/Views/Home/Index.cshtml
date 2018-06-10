@@ -136,7 +136,6 @@
                     showRowsDiv.appendTo(element);
                     goToPage.appendTo(element);
 
-                    // update buttons states.
                     var handleStates = function (event, button, className, add) {
                         button.on(event, function () {
                             if (add == true) {
@@ -146,17 +145,6 @@
                         });
                     }
 
-                    /*if (theme != '') {
-                        handleStates('mousedown', rightButton, 'jqx-icon-arrow-right-selected-' + theme, true);
-                        handleStates('mouseup', rightButton, 'jqx-icon-arrow-right-selected-' + theme, false);
-                        handleStates('mousedown', leftButton, 'jqx-icon-arrow-left-selected-' + theme, true);
-                        handleStates('mouseup', leftButton, 'jqx-icon-arrow-left-selected-' + theme, false);
-
-                        handleStates('mouseenter', rightButton, 'jqx-icon-arrow-right-hover-' + theme, true);
-                        handleStates('mouseleave', rightButton, 'jqx-icon-arrow-right-hover-' + theme, false);
-                        handleStates('mouseenter', leftButton, 'jqx-icon-arrow-left-hover-' + theme, true);
-                        handleStates('mouseleave', leftButton, 'jqx-icon-arrow-left-hover-' + theme, false);
-                    }*/
                     var rowNumSelTag = '#' + rowNumSel;
                     var goToPageSelTag = '#' + goToPageSel;
                     rightButton.click(function () {
@@ -216,15 +204,7 @@
                         enabletooltips: true,
                         filterable: false,
                         rowsheight: 20,
-                        /*pageable: false,
-                        pagerheight: 40,
-                        pagesize: 10,
-                        pagesizeoptions: ['10'],
-                        pagerrenderer: body_page,*/
                         columnsheight: 19,
-                        //ready: function () {
-                        //    $('#mainGrid').jqxGrid('autoresizecolumns');
-                        //},
                         columns: [
                             { text: columnNames[0], datafield: fieldNames[0], width: '5%', hidden: true, align: 'center', cellsalign: 'center' },
                             { text: columnNames[1], datafield: fieldNames[1], width: '15%', hidden: true, align: 'center', cellsalign: 'center' },

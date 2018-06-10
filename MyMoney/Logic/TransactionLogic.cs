@@ -1,5 +1,4 @@
-﻿using System;
-using MyMoney.Models;
+﻿using MyMoney.Models;
 using MyMoney.DBInteraction;
 
 namespace MyMoney.Logic
