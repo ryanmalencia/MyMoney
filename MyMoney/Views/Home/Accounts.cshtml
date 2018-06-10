@@ -73,6 +73,10 @@
                                     commit(false);
                                 }
                             });
+                            var loading = document.getElementById('addLoading');
+                            loading.style.display = "none";
+                            var modal = document.getElementById('myModal');
+                            modal.style.display = "none";
                         }
                     };
 
@@ -244,8 +248,8 @@
             $('#accountBank')[0].value = "";
             $('#accountType')[0].value = "";
             $('#accountBalance')[0].value = "";
-            var modal = document.getElementById('myModal');
-            modal.style.display = "none";
+            var loading = document.getElementById('addLoading');
+            loading.style.display = "block";
         }
     </script>
 }
@@ -332,7 +336,7 @@
             <span class="close">&times;</span>
             <table id="newAccount">
                 <tr>
-                    <td colspan="2"><h2>New Account</h2><br/><br/></td>
+                    <td colspan="2"><h2>New Account</h2><br /><br /></td>
                 </tr>
                 <tr>
                     <td>Account Name: </td>
@@ -351,7 +355,10 @@
                     <td><input type="text" id="accountBalance" /></td>
                 </tr>
                 <tr>
-                    <td colspan="2"><br/><button id="submitRowButton" onclick="submitRow()">Create Account</button></td>
+                    <td colspan="2"><br /><button id="submitRowButton" onclick="submitRow()">Create Account</button></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="display:none;" id="addLoading"><img src="~/Images/loading.gif" /></td>
                 </tr>
             </table>
             <br/>
