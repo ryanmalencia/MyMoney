@@ -1,4 +1,6 @@
 ﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MyMoney.Models
 {
@@ -7,9 +9,16 @@ namespace MyMoney.Models
     /// </summary>
     public class Transaction
     {
+        public enum TransactionType
+        {
+            Deposit,
+            Withdrawal
+        }
+
         public int TransactionID { get; set; }
         public string Account { get; set; }
-        public string Type { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public TransactionType Type { get; set; }
         public string Description { get; set; }
         public double Amount { get; set; }
         public DateTime Date { get; set; }
@@ -29,15 +38,6 @@ namespace MyMoney.Models
         public Transaction(int id)
         {
             TransactionID = id;
-        }
-
-        /// <summary>
-        /// Get the type of the transaction
-        /// </summary>
-        /// <returns>String representation of transaction type</returns>
-        public string GetTransactionType()
-        {
-            return Type;
         }
     }
 }
