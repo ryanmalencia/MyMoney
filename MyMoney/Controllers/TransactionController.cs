@@ -18,6 +18,13 @@ namespace MyMoney.Controllers
             return Ok(JsonConvert.SerializeObject(TransactionLogic.Get()));
         }
 
+        [Route("api/transaction/get/types")]
+        [HttpGet]
+        public IHttpActionResult GetTypes()
+        {
+            return Ok(JsonConvert.SerializeObject(TransactionLogic.GetTypes()));
+        }
+
         [Route("api/transaction/put")]
         [HttpPut]
         public IHttpActionResult Put(Transaction transaction)

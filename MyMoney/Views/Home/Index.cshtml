@@ -50,6 +50,16 @@
                         selectedIndex: 0
                     });
                 });
+
+                $.getJSON('http://10.0.0.136/api/transaction/get/types', function (data) {
+                    var response = JSON.parse(data);
+                    $("#transactionType").jqxDropDownList({
+                        source: response,
+                        width: '175px',
+                        height: '25px',
+                        selectedIndex: 0
+                    });
+                });
             }
 
             init();
@@ -236,9 +246,9 @@
         }
 
         function submitRow() {
-            $('#mainGrid').jqxGrid('addrow', null, { "TransactionID": 0, "Account": $('#transactionAccount')[0].textContent, "Type": $('#transactionType')[0].value, "Description": $('#transactionDescription')[0].value, "Amount": Number($('#transactionAmount')[0].value), "Date": $('#transactionDate')[0].value});
-            $('#transactionAccount')[0].value = "";
-            $('#transactionType')[0].value = "";
+            $('#mainGrid').jqxGrid('addrow', null, { "TransactionID": 0, "Account": $('#transactionAccount')[0].textContent, "Type": $('#transactionType')[0].textContent, "Description": $('#transactionDescription')[0].value, "Amount": Number($('#transactionAmount')[0].value), "Date": $('#transactionDate')[0].value});
+            $('#transactionAccount').jqxDropDownList('selectIndex', 0);
+            $('#transactionType').jqxDropDownList('selectIndex', 0);
             $('#transactionDescription')[0].value = "";
             $('#transactionAmount')[0].value = "";
             $('#transactionDate')[0].value = "";
@@ -336,7 +346,7 @@
                 </tr>
                 <tr>
                     <td>Type: </td>
-                    <td><input type="text" id="transactionType" /></td>
+                    <td><div id="transactionType" style="margin: 0 auto;"></div></td>
                 </tr>
                 <tr>
                     <td>Description: </td>
